@@ -13,6 +13,7 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
+import PetSitterPage, { loadData } from "./components/PetSitterPage.jsx";
 
 const defineRoutes = createRoutesFromElements(
   <Route path="/" element={<App />}>
@@ -24,7 +25,9 @@ const defineRoutes = createRoutesFromElements(
     />
     <Route path="/signup" element={<Signup />} />
     <Route path="/about" element={<About />} />
-  </Route>,
+    <Route path="/petterlink" element={<PetSitterPage name="test" region="testt" />}
+            loader={loadData} />
+  </Route>
 );
 
 const appRoute = createBrowserRouter(defineRoutes);
