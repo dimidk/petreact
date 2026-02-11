@@ -54,8 +54,8 @@ body {
 }
 
 .fa-icon {
-    height: 32px;
-    width: 32px;
+    height: 100px;
+    width: 100px;
     margin-right: 8px;
     color: var(--primary-color);
 }

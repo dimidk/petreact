@@ -1,6 +1,6 @@
 import React from "react";
-import PageHeading from "./PageHeading";
-import PageListing from "./PageListing";
+import PageHeading from "../PageHeading";
+import PageListing from "../PageListing";
 
 export default function Home() {
   return (
@@ -9,7 +9,10 @@ export default function Home() {
         <span>Testing.....</span>
       </PageHeading>
 
-      <PageListing name="dimi" />
+      <PageListing
+        name=""
+        service={["Pet walking", "Overnight stay", "Take care daily"]}
+      />
     </div>
   );
 }

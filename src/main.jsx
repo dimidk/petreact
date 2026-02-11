@@ -2,10 +2,14 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.jsx";
-import Home from "./components/Home.jsx";
-import Login from "./components/Login.jsx";
-import Signup from "./components/Signup.jsx";
-import About from "./components/About.jsx";
+import Home from "./components/menu/Home.jsx";
+import Login from "./components/menu/Login.jsx";
+import Signup from "./components/menu/Signup.jsx";
+// import { loginUser } from "./components/Login.jsx";
+import About from "./components/menu/About.jsx";
+import PetSitterHome, {
+  loadData,
+} from "./components/petsitter/PetSitterHome.jsx";
 import axios from "axios";
 import {
   createBrowserRouter,
@@ -13,7 +17,7 @@ import {
   Route,
   RouterProvider,
 } from "react-router-dom";
-import PetSitterPage, { loadData } from "./components/PetSitterPage.jsx";
+import PetSitterPage from "./components/PetSitterPage.jsx";
 
 const defineRoutes = createRoutesFromElements(
   <Route path="/" element={<App />}>
@@ -23,11 +27,29 @@ const defineRoutes = createRoutesFromElements(
       path="/login"
       element={<Login message="Login to see your reservations!" />}
     />
-    <Route path="/signup" element={<Signup />} />
+    <Route
+      path="/signup"
+      element={<Signup />}
+      //
+    />
+    <Route
+      path="/petsitterpage"
+      element={<PetSitterPage />}
+      // action={loginUser}
+    />
     <Route path="/about" element={<About />} />
-    <Route path="/petterlink" element={<PetSitterPage name="test" region="testt" />}
-            loader={loadData} />
-  </Route>
+    <Route
+      path="/petsitterlink"
+      element={<PetSitterPage />}
+      // loader={loadData}
+    />
+
+    <Route
+      path="/petsitterhome"
+      element={<PetSitterHome />}
+      loader={loadData}
+    />
+  </Route>,
 );
 
 const appRoute = createBrowserRouter(defineRoutes);
