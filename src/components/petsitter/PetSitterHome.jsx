@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useLoaderData, useLocation } from "react-router-dom";
-import PageHeading from "../PageHeading";
+import PageTitle from "../PageTitle";
 import Card from "../Card";
 import PageListing from "../PageListing";
 import axios from "axios";
+import { useAuth } from "../../auth/authService";
 
 export default function PetSitterHome() {
   const facilities = useLoaderData();
@@ -20,10 +21,9 @@ export default function PetSitterHome() {
 
   return (
     <div className="container-md">
-      <PageHeading title="Welcome to your home page">
-        {/* {data.name} */}
-      </PageHeading>
-      <Card srvname={name} region={email} mobile={mobile} />
+      <PageTitle title="Welcome to your home page" />
+
+      {/* <Card srvname={name} region={email} mobile={mobile} /> */}
       <PageListing facilities={facilities} />
     </div>
   );

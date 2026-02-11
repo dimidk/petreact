@@ -1,69 +1,38 @@
 import React from "react";
-import Header from "./Header";
-import Footer from "./Footer";
-import { useNavigate, useNavigation } from "react-router-dom";
-import { useRef, useState } from "react";
-import apiClient from "../../api/apiClient";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Form } from "react-router-dom";
+
 import axios from "axios";
+import { useAuth } from "../../auth/authService";
+import PageTitle from "../PageTitle";
 
-export default function Login({ message }) {
-  const navigation = useNavigate();
-
-  const formRef = useRef("");
+export default function Login() {
+  const navigate = useNavigate();
   const [username, setUsername] = useState("");
-  const [petlink, setPetlink] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleClick = async (e) => {
+  const login = useAuth();
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(username, petlink);
-    if (username === "" || petlink === "") {
-      return navigation("/login");
-    }
+    const userData = await loginUser(username, password);
 
-    try {
-      let url = "http://localhost:8008/sitter/link/" + petlink;
-      const resp = await axios.get(url);
+    setUsername(userData.name);
 
-      // const resp = apiClient.get(url);
+    localStorage.setItem("user", JSON.stringify(userData));
 
-      console.log("this is the requested url " + url);
-      console.log("these are the response data " + resp.data);
-      console.log("in details " + resp.data.name + " " + resp.data.mobile);
-      const username = resp.data.name;
-      const petSitterJson = {
-        sittername: resp.data.name,
-        email: resp.data.email,
-        mobile: resp.data.mobile,
-        petlink: resp.data.petlink,
-      };
-
-      // navigation("/petsitterpage", { state: petSitterJson });
-
-      console.log(
-        "petSitterJson object " +
-          petSitterJson.sittername +
-          " " +
-          petSitterJson.email,
-      );
-
-      navigation("/petsitterhome", { state: petSitterJson });
-    } catch (error) {
-      console.log("ERRORORORROR!!!!");
-      throw new Response(error.message);
-    }
-
-    // console.log(resp);
+    navigate("/petsitterhome");
   };
 
   return (
     <div className="container-md">
-      <h5>{message}</h5>
-      <form className="row g-3" action=""></form>
+      <PageTitle title="Login Page" />
 
       <div className="row gx-2 gy-2 mb-3 justify-content-center">
         <div className="col-lg-6 mb-3">
-          <form method="POST">
+          <Form method="POST" onSubmit={handleSubmit}>
             <div className="form-floating my-5">
               <input
                 type="text"
@@ -86,8 +55,8 @@ export default function Login({ message }) {
                 placeholder="....."
                 id="petlink"
                 name="petlink"
-                onChange={(e) => setPetlink(e.target.value)}
-                value={petlink}
+                onChange={(e) => setPassword(e.target.value)}
+                value={password}
               />
               <label htmlFor="petlink" className="form-label">
                 PetLink:
@@ -97,14 +66,28 @@ export default function Login({ message }) {
               <button
                 type="submit"
                 className="btn btn-primary"
-                onClick={handleClick}
+                // onClick={handleClick}
               >
-                Send!
+                Login
               </button>
             </div>
-          </form>
+          </Form>
         </div>
       </div>
     </div>
   );
+}
+
+export async function loginUser(user, password) {
+  try {
+    const resp = await axios.post("http://localhost:8008/sitter", {
+      name: user,
+      email: "",
+      mobile: "",
+      password: password,
+    });
+    return resp.data;
+  } catch (error) {
+    throw new Response(error.message);
+  }
 }
